@@ -1,11 +1,13 @@
 package com.tw;
 
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.core.Is;
+import com.tw.exception.DivideByZeroException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.core.Is.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class CalculatorTest {
     private Calculator calculator;
@@ -19,13 +21,25 @@ class CalculatorTest {
     void shouldAddTwoValues() {
         double result = calculator.add(1.0, 1.0);
 
-        MatcherAssert.assertThat(result, Is.is(equalTo(2.0)));
+        assertThat(result, is(equalTo(2.0)));
     }
 
     @Test
     void shouldSubtractTwoValues() {
         double result = calculator.subtract(2.0, 1.0);
 
-        MatcherAssert.assertThat(result, Is.is(equalTo(1.0)));
+        assertThat(result, is(equalTo(1.0)));
+    }
+
+    @Test
+    void shouldDivideTwoValues() throws DivideByZeroException {
+        double result = calculator.divide(2.0, 2.0);
+
+        assertThat(result, is(equalTo(1.0)));
+    }
+
+    @Test
+    void shouldNotDivideValueByZero() {
+        assertThrows(DivideByZeroException.class, ()-> calculator.divide(1, 0));
     }
 }
