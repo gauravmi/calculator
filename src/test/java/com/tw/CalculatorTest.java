@@ -39,6 +39,13 @@ class CalculatorTest {
     }
 
     @Test
+    void shouldMultiplyTwoValues() {
+        double result = calculator.multiply(2.0, 2.0);
+
+        assertThat(result, is(equalTo(4.0)));
+    }
+
+    @Test
     void shouldNotDivideValueByZero() {
         assertThrows(DivideByZeroException.class, ()-> calculator.divide(1, 0));
     }
