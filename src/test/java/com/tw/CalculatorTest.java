@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.core.Is.*;
+import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class CalculatorTest {
@@ -47,6 +47,6 @@ class CalculatorTest {
 
     @Test
     void shouldNotDivideValueByZero() {
-        assertThrows(DivideByZeroException.class, ()-> calculator.divide(1, 0));
+        assertThrows(DivideByZeroException.class, () -> calculator.divide(1, 0));
     }
 }
