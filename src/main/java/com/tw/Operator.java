@@ -9,7 +9,7 @@ public enum Operator implements Token, Operation {
     PLUS("+") {
         @Override
         public double perform(double value1, double value2) {
-            return value1+value2;
+            return value1 + value2;
         }
     },
     MINUS("-") {
@@ -21,7 +21,7 @@ public enum Operator implements Token, Operation {
     DIV("/") {
         @Override
         public double perform(double value1, double value2) {
-            if(value2 == 0)
+            if (value2 == 0)
                 throw new DivideByZeroException("Can not divide by zero");
             return value1 / value2;
         }
