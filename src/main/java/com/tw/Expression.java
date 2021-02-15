@@ -34,6 +34,7 @@ public class Expression {
             if (token.isOperand()) {
                 stack.push(token);
             }
+
             if (token.isOperator()) {
                 Token operand1 = stack.pop();
                 Token operand2 = stack.pop();
@@ -41,7 +42,7 @@ public class Expression {
                 stack.push(result);
             }
         }
-        return Double.parseDouble(stack.pop().getValue());
+        return parseDouble(stack.pop().getValue());
     }
 
     private Token perform(String operator, String operand1, String operand2) {

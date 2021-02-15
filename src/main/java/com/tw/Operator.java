@@ -1,5 +1,7 @@
 package com.tw;
 
+import com.tw.exception.DivideByZeroException;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,6 +21,8 @@ public enum Operator implements Token, Operation {
     DIV("/") {
         @Override
         public double perform(double value1, double value2) {
+            if(value2 == 0)
+                throw new DivideByZeroException("Can not divide by zero");
             return value1 / value2;
         }
     },
