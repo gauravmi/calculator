@@ -51,9 +51,6 @@ public class Expression {
     }
 
     private boolean isOperator(String token) {
-        return token.equals("+") ||
-                token.equals("-") ||
-                token.equals("*") ||
-                token.equals("/");
+        return Operator.isOperator(token);
     }
 }

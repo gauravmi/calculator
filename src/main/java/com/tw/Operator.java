@@ -52,6 +52,11 @@ public enum Operator implements Token, Operation {
         return operators.get(op);
     }
 
+    public static boolean isOperator(String op) {
+        Operator operator = operators.get(op);
+        return operator != null;
+    }
+
     @Override
     public boolean isOperator() {
         return true;
