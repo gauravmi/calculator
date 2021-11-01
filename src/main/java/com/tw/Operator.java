@@ -5,8 +5,14 @@ import com.tw.exception.DivideByZeroException;
 import java.util.HashMap;
 import java.util.Map;
 
+// can be done by class inheritance too; but i feel enum is better suited here as operators is a closed set
 public enum Operator implements Token, Operation {
     PLUS("+") {
+        @Override
+        public int precedence() {
+            return 1;
+        }
+
         @Override
         public double perform(double value1, double value2) {
             return value1 + value2;
@@ -14,11 +20,21 @@ public enum Operator implements Token, Operation {
     },
     MINUS("-") {
         @Override
+        public int precedence() {
+            return 1;
+        }
+
+        @Override
         public double perform(double value1, double value2) {
             return value1 - value2;
         }
     },
     DIV("/") {
+        @Override
+        public int precedence() {
+            return 2;
+        }
+
         @Override
         public double perform(double value1, double value2) {
             if (value2 == 0)
@@ -27,6 +43,11 @@ public enum Operator implements Token, Operation {
         }
     },
     MULTIPLY("*") {
+        @Override
+        public int precedence() {
+            return 2;
+        }
+
         @Override
         public double perform(double value1, double value2) {
             return value1 * value2;
@@ -69,5 +90,12 @@ public enum Operator implements Token, Operation {
     @Override
     public boolean isOperand() {
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return "Operator{" +
+                "value='" + value + '\'' +
+                '}';
     }
 }

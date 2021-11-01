@@ -4,4 +4,5 @@ public interface Token {
     boolean isOperator();
     boolean isOperand();
     String getValue();
+    int precedence();
 }

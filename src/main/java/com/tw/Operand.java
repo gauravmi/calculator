@@ -21,4 +21,15 @@ public class Operand implements Token {
     public String getValue() {
         return value;
     }
+
+    // does not belong here; need refactoring
+    @Override
+    public int precedence() {return -11111;}
+
+    @Override
+    public String toString() {
+        return "Operand{" +
+                "value='" + value + '\'' +
+                '}';
+    }
 }

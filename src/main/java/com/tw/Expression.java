@@ -2,6 +2,7 @@ package com.tw;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Stack;
 
 import static com.tw.Operator.get;
@@ -16,7 +17,7 @@ public class Expression {
         stack = new Stack<>();
     }
 
-    private List<Token> parse(String postfixExpression) {
+    public List<Token> parse(String postfixExpression) {
         List<Token> tokens = new ArrayList<>();
         for (String token : postfixExpression.split("")) {
             if (isOperator(token)) {
