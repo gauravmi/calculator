@@ -24,7 +24,7 @@ class ExpressionTest {
 
     @Test
     void shouldEvaluateExpressionsContainingAddition() {
-        when(expressionParser.parse("11+")).thenReturn(List.of(new Operand("1"), new Operand("1"), Operator.PLUS));
+        when(expressionParser.parse("11+")).thenReturn(List.of(Operand.of("1"), Operand.of("1"), Operator.PLUS));
         PostfixExpression expression = new PostfixExpression("11+", expressionParser);
 
         assertThat(expression.evaluate(), is(2.0));
@@ -32,7 +32,7 @@ class ExpressionTest {
 
     @Test
     void shouldEvaluateExpressionContainingSubtraction() {
-        when(expressionParser.parse("11-")).thenReturn(List.of(new Operand("1"), new Operand("1"), Operator.MINUS));
+        when(expressionParser.parse("11-")).thenReturn(List.of(Operand.of("1"), Operand.of("1"), Operator.MINUS));
         PostfixExpression expression = new PostfixExpression("11-", expressionParser);
 
         assertThat(expression.evaluate(), is(0.0));
@@ -40,7 +40,7 @@ class ExpressionTest {
 
     @Test
     void shouldEvaluateExpressionsContainingMultiplication() {
-        when(expressionParser.parse("22*")).thenReturn(List.of(new Operand("2"), new Operand("2"), Operator.MULTIPLY));
+        when(expressionParser.parse("22*")).thenReturn(List.of(Operand.of("2"), Operand.of("2"), Operator.MULTIPLY));
         PostfixExpression expression = new PostfixExpression("22*", expressionParser);
 
         assertThat(expression.evaluate(), is(4.0));
@@ -48,7 +48,7 @@ class ExpressionTest {
 
     @Test
     void shouldEvaluateExpressionsContainingDivision() {
-        when(expressionParser.parse("22/")).thenReturn(List.of(new Operand("2"), new Operand("2"), Operator.DIV));
+        when(expressionParser.parse("22/")).thenReturn(List.of(Operand.of("2"), Operand.of("2"), Operator.DIV));
         PostfixExpression expression = new PostfixExpression("22/", expressionParser);
 
         assertThat(expression.evaluate(), is(1.0));
@@ -56,8 +56,8 @@ class ExpressionTest {
 
     @Test
     void shouldEvaluateComplexExpressions() {
-        when(expressionParser.parse("224*2/+1-")).thenReturn(List.of(new Operand("2"), new Operand("2"), new Operand("4"), Operator.MULTIPLY,
-                new Operand("2"), Operator.DIV, Operator.PLUS, new Operand("1"), Operator.MINUS));
+        when(expressionParser.parse("224*2/+1-")).thenReturn(List.of(Operand.of("2"), Operand.of("2"), Operand.of("4"), Operator.MULTIPLY,
+                Operand.of("2"), Operator.DIV, Operator.PLUS, Operand.of("1"), Operator.MINUS));
         PostfixExpression expression = new PostfixExpression("224*2/+1-", expressionParser);
 
         assertThat(expression.evaluate(), is(5.0));

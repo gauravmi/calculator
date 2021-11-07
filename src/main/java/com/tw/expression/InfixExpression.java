@@ -20,36 +20,46 @@ public class InfixExpression {
         this.expressionParser = expressionParser;
     }
 
-    public String toPostfix() {
+    public PostfixExpression toPostfix() {
         List<Token> tokens = expressionParser.parse(infixExpression);
         Stack<Token> operatorStack = new Stack<>();
         tokens.forEach(token -> {
-            boolean isDigit = token.isOperand() && !Objects.equals(token.getValue(), "(") && !Objects.equals(token.getValue(), ")");
+            boolean isDigit = token.isOperand() && !isOpenBracket(token) && !isCloseBracket(token);
+
             if (isDigit) {
                 operandStack.push(token);
             }
 
-            else if (Objects.equals(token.getValue(), "(")) {
-                operatorStack.push(new Operand("("));
+            else if (isOpenBracket(token)) {
+                operatorStack.push(Operand.of("("));
             }
 
-            else if (Objects.equals(token.getValue(), ")")) {
+            else if (isCloseBracket(token)) {
                 handleClosingBracket(operatorStack);
             }
 
-            else  { //operator case
+            else  { // operator case
                 handleOperator(operatorStack, token);
             }
         });
 
         handleInvalidExpressions(operatorStack);
 
-        return operandStack.stream().map(Token::getValue).collect(Collectors.joining(""));
+        String expression = operandStack.stream().map(Token::getValue).collect(Collectors.joining(""));
+        return new PostfixExpression(expression, expressionParser);
+    }
+
+    private boolean isCloseBracket(Token token) {
+        return Objects.equals(token.getValue(), ")");
+    }
+
+    private boolean isOpenBracket(Token token) {
+        return Objects.equals(token.getValue(), "(");
     }
 
     private void handleInvalidExpressions(Stack<Token> operatorStack) {
         while (!operatorStack.isEmpty()) {
-            if (Objects.equals(operatorStack.peek().getValue(), "(")) {
+            if (isOpenBracket(operatorStack.peek())) {
                 throw new RuntimeException("Invalid expression");
             }
             Token pop = operatorStack.pop();
@@ -66,7 +76,7 @@ public class InfixExpression {
     }
 
     private void handleClosingBracket(Stack<Token> operatorStack) {
-        while (!operatorStack.isEmpty() && !Objects.equals(operatorStack.peek().getValue(), "(")) {
+        while (!operatorStack.isEmpty() && !isOpenBracket(operatorStack.peek())) {
             Token operator = operatorStack.pop();
             operandStack.push(operator);
         }

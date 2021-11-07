@@ -18,6 +18,7 @@ public enum Operator implements Token, Operation {
             return value1 + value2;
         }
     },
+
     MINUS("-") {
         @Override
         public int precedence() {
@@ -29,6 +30,7 @@ public enum Operator implements Token, Operation {
             return value1 - value2;
         }
     },
+
     DIV("/") {
         @Override
         public int precedence() {
@@ -42,6 +44,7 @@ public enum Operator implements Token, Operation {
             return value1 / value2;
         }
     },
+
     MULTIPLY("*") {
         @Override
         public int precedence() {
@@ -53,6 +56,7 @@ public enum Operator implements Token, Operation {
             return value1 * value2;
         }
     };
+
     private final String value;
 
     private static final Map<String, Operator> operators;

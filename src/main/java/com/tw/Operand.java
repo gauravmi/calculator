@@ -3,7 +3,7 @@ package com.tw;
 public class Operand implements Token {
     private final String value;
 
-    public Operand(String token) {
+    private Operand(String token) {
         value = token;
     }
 

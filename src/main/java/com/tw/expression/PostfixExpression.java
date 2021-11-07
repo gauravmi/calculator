@@ -41,7 +41,7 @@ public class PostfixExpression {
     private Token perform(String operator, String operand1, String operand2) {
         double result = get(operator)
                 .perform(parseDouble(operand2), parseDouble(operand1));
-        return new Operand(Double.toString(result));
+        return Operand.of(Double.toString(result));
     }
 
 }

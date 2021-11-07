@@ -16,7 +16,7 @@ public class ExpressionParser {
             if (isOperator(token)) {
                 tokens.add(get(token));
             } else { //  can be improved to add a logic to identify proper operands
-                tokens.add(new Operand(token));
+                tokens.add(Operand.of(token));
             }
         }
 
