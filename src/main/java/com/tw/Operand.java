@@ -7,6 +7,10 @@ public class Operand implements Token {
         value = token;
     }
 
+    public static Operand of(String value) {
+        return new Operand(value);
+    }
+
     @Override
     public boolean isOperator() {
         return false;

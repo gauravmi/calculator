@@ -1,36 +1,28 @@
-package com.tw;
+package com.tw.expression;
 
-import java.util.ArrayList;
+import com.tw.Operand;
+import com.tw.Token;
+import com.tw.parser.ExpressionParser;
+
 import java.util.List;
-import java.util.Objects;
 import java.util.Stack;
 
 import static com.tw.Operator.get;
 import static java.lang.Double.parseDouble;
 
-public class Expression {
-    private final List<Token> tokens;
+public class PostfixExpression {
     private final Stack<Token> stack;
+    private final String expression;
+    private final ExpressionParser expressionParser;
 
-    public Expression(String postfixExpression) {
-        tokens = parse(postfixExpression);
+    public PostfixExpression(String expression, ExpressionParser expressionParser) {
+        this.expression = expression;
+        this.expressionParser = expressionParser;
         stack = new Stack<>();
     }
 
-    public List<Token> parse(String postfixExpression) {
-        List<Token> tokens = new ArrayList<>();
-        for (String token : postfixExpression.split("")) {
-            if (isOperator(token)) {
-                tokens.add(get(token));
-            } else {
-                tokens.add(new Operand(token));
-            }
-        }
-
-        return tokens;
-    }
-
     public double evaluate() {
+        List<Token> tokens = expressionParser.parse(expression);
         for (Token token : tokens) {
             if (token.isOperand()) {
                 stack.push(token);
@@ -52,7 +44,4 @@ public class Expression {
         return new Operand(Double.toString(result));
     }
 
-    private boolean isOperator(String token) {
-        return Operator.isOperator(token);
-    }
 }
