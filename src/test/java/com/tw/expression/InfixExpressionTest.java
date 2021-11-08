@@ -1,6 +1,6 @@
-package com.tw;
+package com.tw.expression;
 
-import com.tw.expression.InfixExpression;
+import com.tw.Operand;
 import com.tw.parser.ExpressionParser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -8,15 +8,13 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static com.tw.Operator.*;
+import static com.tw.Operator.PLUS;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-
-class InfixToPostfixTest {
-
+class InfixExpressionTest {
     private ExpressionParser expressionParser;
 
     @BeforeEach
@@ -30,7 +28,7 @@ class InfixToPostfixTest {
         String infixExpression = "1-1";
         InfixExpression infixToPostfix = new InfixExpression(infixExpression, expressionParser);
 
-        assertThat(infixToPostfix.toPostfix(), is("11-"));
+        assertThat(infixToPostfix.toPostfix(), is(new PostfixExpression("11-", expressionParser)));
     }
 
     @Test
@@ -39,7 +37,7 @@ class InfixToPostfixTest {
         String infixExpression = "2+1*3+4";
         InfixExpression infixToPostfix = new InfixExpression(infixExpression, expressionParser);
 
-        assertThat(infixToPostfix.toPostfix(), is("213*+4+"));
+        assertThat(infixToPostfix.toPostfix(), is(new PostfixExpression("213*+4+", expressionParser)));
     }
 
     @Test
@@ -49,7 +47,7 @@ class InfixToPostfixTest {
         String infixExpression = "(8+9)*(3+4)";
         InfixExpression infixToPostfix = new InfixExpression(infixExpression, expressionParser);
 
-        assertThat(infixToPostfix.toPostfix(), is("89+34+*"));
+        assertThat(infixToPostfix.toPostfix(), is(new PostfixExpression("89+34+*", expressionParser)));
     }
 
     @Test
@@ -60,7 +58,7 @@ class InfixToPostfixTest {
         String infixExpression = "((1+2)-3*(4/5))+6";
         InfixExpression infixToPostfix = new InfixExpression(infixExpression, expressionParser);
 
-        assertThat(infixToPostfix.toPostfix(), is("12+345/*-6+"));
+        assertThat(infixToPostfix.toPostfix(), is(new PostfixExpression("12+345/*-6+", expressionParser)));
     }
 
     private Operand operand(String value) {

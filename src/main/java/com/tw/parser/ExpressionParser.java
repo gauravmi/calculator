@@ -1,12 +1,12 @@
 package com.tw.parser;
 
-import com.tw.Operand;
 import com.tw.Operator;
 import com.tw.Token;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.tw.Operand.of;
 import static com.tw.Operator.get;
 
 public class ExpressionParser {
@@ -15,8 +15,8 @@ public class ExpressionParser {
         for (String token : expression.split("")) {
             if (isOperator(token)) {
                 tokens.add(get(token));
-            } else { //  can be improved to add a logic to identify proper operands
-                tokens.add(Operand.of(token));
+            } else { //  TODO: can be improved to add a logic to identify proper operands
+                tokens.add(of(token));
             }
         }
 

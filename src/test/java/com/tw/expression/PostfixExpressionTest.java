@@ -1,20 +1,19 @@
-package com.tw;
-import com.tw.expression.PostfixExpression;
+package com.tw.expression;
+
+import com.tw.Operand;
+import com.tw.Operator;
 import com.tw.parser.ExpressionParser;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-class ExpressionTest {
+class PostfixExpressionTest {
     private ExpressionParser expressionParser;
 
     @BeforeEach

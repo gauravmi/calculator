@@ -1,5 +1,7 @@
 package com.tw;
 
+import java.util.Objects;
+
 public class Operand implements Token {
     private final String value;
 
@@ -35,5 +37,18 @@ public class Operand implements Token {
         return "Operand{" +
                 "value='" + value + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Operand operand = (Operand) o;
+        return Objects.equals(value, operand.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(value);
     }
 }

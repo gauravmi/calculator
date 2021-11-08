@@ -5,6 +5,7 @@ import com.tw.Token;
 import com.tw.parser.ExpressionParser;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Stack;
 
 import static com.tw.Operator.get;
@@ -44,4 +45,16 @@ public class PostfixExpression {
         return Operand.of(Double.toString(result));
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PostfixExpression that = (PostfixExpression) o;
+        return Objects.equals(stack, that.stack) && Objects.equals(expression, that.expression) && Objects.equals(expressionParser, that.expressionParser);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(stack, expression, expressionParser);
+    }
 }

@@ -13,7 +13,7 @@ public class Calculator {
     }
 
     public double calculate(String expression) {
-        InfixExpression infixExpression = new InfixExpression(expression, expressionParser);
+        InfixExpression infixExpression = new InfixExpression(expression, expressionParser); // TODO: can be a dependency
         PostfixExpression postfixExpression = infixExpression.toPostfix();
         return postfixExpression.evaluate();
     }
