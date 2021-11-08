@@ -5,7 +5,7 @@ import com.tw.exception.DivideByZeroException;
 import java.util.HashMap;
 import java.util.Map;
 
-// can be done by class inheritance too; but i feel enum is better suited here as operators is a closed set
+// can be done by class inheritance too; but I feel enum is better suited here as operators is a closed set
 public enum Operator implements Token, Operation {
     PLUS("+") {
         @Override

@@ -1,6 +1,7 @@
 package com.tw.expression;
 
 import com.tw.Operand;
+import com.tw.exception.InvalidInfixExpressionException;
 import com.tw.parser.ExpressionParser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,6 +12,7 @@ import static com.tw.Operator.*;
 import static com.tw.Operator.PLUS;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -59,6 +61,15 @@ class InfixExpressionTest {
         InfixExpression infixToPostfix = new InfixExpression(infixExpression, expressionParser);
 
         assertThat(infixToPostfix.toPostfix(), is(new PostfixExpression("12+345/*-6+", expressionParser)));
+    }
+
+    @Test
+    void shouldThrowExceptionForInvalidExpression() {
+        when(expressionParser.parse("((1+2")).thenReturn(List.of(operand("("), operand("("), operand("1"), PLUS, operand("2")));
+        String infixExpression = "((1+2";
+        InfixExpression infixToPostfix = new InfixExpression(infixExpression, expressionParser);
+
+        assertThrows(InvalidInfixExpressionException.class, infixToPostfix::toPostfix);
     }
 
     private Operand operand(String value) {

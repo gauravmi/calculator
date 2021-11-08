@@ -2,6 +2,7 @@ package com.tw.expression;
 
 import com.tw.Operand;
 import com.tw.Token;
+import com.tw.exception.InvalidInfixExpressionException;
 import com.tw.parser.ExpressionParser;
 
 import java.util.List;
@@ -60,7 +61,7 @@ public class InfixExpression {
     private void handleInvalidExpressions(Stack<Token> operatorStack) {
         while (!operatorStack.isEmpty()) {
             if (isOpenBracket(operatorStack.peek())) {
-                throw new RuntimeException("Invalid expression");
+                throw new InvalidInfixExpressionException("Invalid expression");
             }
             Token pop = operatorStack.pop();
             operandStack.push(pop);
