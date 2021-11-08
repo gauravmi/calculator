@@ -2,6 +2,7 @@ package com.tw;
 
 
 import com.tw.exception.DivideByZeroException;
+import com.tw.exception.InvalidExpressionException;
 import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.Test;
 
@@ -47,5 +48,11 @@ class CalculatorTest {
     void shouldNotDivideByZero() {
         Calculator calculator = new Calculator();
         assertThrows(DivideByZeroException.class, () -> calculator.calculate("1/0"));
+    }
+
+    @Test
+    void shouldNotSupportOperator() {
+        Calculator calculator = new Calculator();
+        assertThrows(InvalidExpressionException.class, () -> calculator.calculate("1^0"));
     }
 }

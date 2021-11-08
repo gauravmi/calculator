@@ -2,6 +2,7 @@ package com.tw.expression;
 
 import com.tw.Operand;
 import com.tw.Operator;
+import com.tw.exception.InvalidExpressionException;
 import com.tw.parser.ExpressionParser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,6 +11,7 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -60,5 +62,13 @@ class PostfixExpressionTest {
         PostfixExpression expression = new PostfixExpression("224*2/+1-", expressionParser);
 
         assertThat(expression.evaluate(), is(5.0));
+    }
+
+    @Test
+    void shouldNotEvaluateInvalidExpressions() {
+        when(expressionParser.parse("2-")).thenReturn(List.of(Operand.of("2"), Operator.MINUS));
+        PostfixExpression expression = new PostfixExpression("2-", expressionParser);
+
+        assertThrows(InvalidExpressionException.class, expression::evaluate);
     }
 }
