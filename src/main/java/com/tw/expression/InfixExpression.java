@@ -5,10 +5,10 @@ import com.tw.Token;
 import com.tw.exception.InvalidInfixExpressionException;
 import com.tw.parser.ExpressionParser;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Stack;
-import java.util.stream.Collectors;
 
 public class InfixExpression {
     Stack<Token> operandStack;
@@ -45,9 +45,7 @@ public class InfixExpression {
         });
 
         handleInvalidExpressions(operatorStack);
-
-        String expression = operandStack.stream().map(Token::getValue).collect(Collectors.joining(""));
-        return new PostfixExpression(expression, expressionParser);
+        return new PostfixExpression(new ArrayList<>(operandStack));
     }
 
     private boolean isCloseBracket(Token token) {
@@ -81,7 +79,6 @@ public class InfixExpression {
             Token operator = operatorStack.pop();
             operandStack.push(operator);
         }
-        System.out.println("operatorStack = " + operatorStack);
         operatorStack.pop();
     }
 }

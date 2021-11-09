@@ -102,4 +102,5 @@ public enum Operator implements Token, Operation {
                 "value='" + value + '\'' +
                 '}';
     }
+
 }

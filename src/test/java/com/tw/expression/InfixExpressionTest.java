@@ -1,6 +1,8 @@
 package com.tw.expression;
 
 import com.tw.Operand;
+import com.tw.Operator;
+import com.tw.Token;
 import com.tw.exception.InvalidInfixExpressionException;
 import com.tw.parser.ExpressionParser;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,7 +14,6 @@ import static com.tw.Operator.*;
 import static com.tw.Operator.PLUS;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -26,50 +27,48 @@ class InfixExpressionTest {
 
     @Test
     void shouldConvertSimpleInfixExpression() {
-        when(expressionParser.parse("1-1")).thenReturn(List.of(Operand.of("1"), MINUS, Operand.of("1")));
+        List<Token> tokens = List.of(Operand.of("1"), MINUS, Operand.of("1"));
         String infixExpression = "1-1";
+        when(expressionParser.parse(infixExpression)).thenReturn(tokens);
         InfixExpression infixToPostfix = new InfixExpression(infixExpression, expressionParser);
-
-        assertThat(infixToPostfix.toPostfix(), is(new PostfixExpression("11-", expressionParser)));
+        List<Token> expectedTokens = List.of(Operand.of("1"), Operand.of("1"), MINUS);
+        assertThat(infixToPostfix.toPostfix(), is(new PostfixExpression(expectedTokens)));
     }
 
     @Test
     void shouldConvertInfixExpressionWithoutBrackets() {
-        when(expressionParser.parse("2+1*3+4")).thenReturn(List.of(operand("2"), PLUS, operand("1"), MULTIPLY, operand("3"), PLUS, operand("4")));
+        List<Token> tokens = List.of(operand("2"), PLUS, operand("1"), MULTIPLY, operand("3"), PLUS, operand("4"));
         String infixExpression = "2+1*3+4";
+        when(expressionParser.parse(infixExpression)).thenReturn(tokens);
         InfixExpression infixToPostfix = new InfixExpression(infixExpression, expressionParser);
+        List<Token> expectedTokens = List.of(operand("2"), operand("1"), operand("3"), MULTIPLY, PLUS, operand("4"), PLUS);
 
-        assertThat(infixToPostfix.toPostfix(), is(new PostfixExpression("213*+4+", expressionParser)));
+        assertThat(infixToPostfix.toPostfix(), is(new PostfixExpression(expectedTokens)));
     }
 
     @Test
     void shouldReturnConvertInfixExpressionWithBrackets() {
-        when(expressionParser.parse("(8+9)*(3+4)")).thenReturn(List.of(operand("("), operand("8"), PLUS, operand("9"), operand(")"),
-                MULTIPLY, operand("("), operand("3"), PLUS, operand("4"), operand(")")));
-        String infixExpression = "(8+9)*(3+4)";
+        List<Token> tokens = List.of(operand("8"), PLUS, operand("9"), MULTIPLY, operand("3"), PLUS, operand("4"));
+        String infixExpression = "8+9*3+4";
+        when(expressionParser.parse(infixExpression)).thenReturn(tokens);
         InfixExpression infixToPostfix = new InfixExpression(infixExpression, expressionParser);
 
-        assertThat(infixToPostfix.toPostfix(), is(new PostfixExpression("89+34+*", expressionParser)));
+        List<Token> expectedTokens = List.of(operand("8"), operand("9"), operand("3"), MULTIPLY, PLUS, operand("4"), PLUS);
+
+        assertThat(infixToPostfix.toPostfix(), is(new PostfixExpression(expectedTokens)));
     }
 
     @Test
     void shouldReturnConvertComplexInfixExpressionWithBrackets() {
-        when(expressionParser.parse("((1+2)-3*(4/5))+6")).thenReturn(List.of(operand("("), operand("("), operand("1"), PLUS, operand("2"),
-                operand(")"), MINUS, operand("3"), MULTIPLY, operand("("), operand("4"), DIV, operand("5"), operand(")"), operand(")"),
-                PLUS, operand("6")));
-        String infixExpression = "((1+2)-3*(4/5))+6";
+        List<Token> tokens = List.of(operand("1"), PLUS, operand("2"), MINUS, operand("3"), MULTIPLY, operand("4"), DIV, operand("5"),PLUS, operand("6"));
+        String infixExpression = "1+2-3*4/5+6";
+        when(expressionParser.parse(infixExpression)).thenReturn(tokens);
         InfixExpression infixToPostfix = new InfixExpression(infixExpression, expressionParser);
 
-        assertThat(infixToPostfix.toPostfix(), is(new PostfixExpression("12+345/*-6+", expressionParser)));
-    }
+        List<Token> expectedTokens = List.of(operand("1"), operand("2"), PLUS, operand("3"), operand("4"), MULTIPLY, operand("5"), DIV, MINUS, operand("6"), PLUS);
 
-    @Test
-    void shouldThrowExceptionForInvalidExpression() {
-        when(expressionParser.parse("((1+2")).thenReturn(List.of(operand("("), operand("("), operand("1"), PLUS, operand("2")));
-        String infixExpression = "((1+2";
-        InfixExpression infixToPostfix = new InfixExpression(infixExpression, expressionParser);
+        assertThat(infixToPostfix.toPostfix(), is(new PostfixExpression(expectedTokens)));
 
-        assertThrows(InvalidInfixExpressionException.class, infixToPostfix::toPostfix);
     }
 
     private Operand operand(String value) {

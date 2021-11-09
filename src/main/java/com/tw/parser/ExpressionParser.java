@@ -12,7 +12,7 @@ import static com.tw.Operator.get;
 public class ExpressionParser {
     public List<Token> parse(String expression) {
         List<Token> tokens = new ArrayList<>();
-        for (String token : expression.split("")) {
+        for (String token : expression.split("((?=\\+)|(?<=\\+))|((?=\\-)|(?<=\\-))|((?=\\/)|(?<=\\/))|((?=\\*)|(?<=\\*))")) {
             if (isOperator(token)) {
                 tokens.add(get(token));
             } else { //  TODO: can be improved to add a logic to identify proper operands

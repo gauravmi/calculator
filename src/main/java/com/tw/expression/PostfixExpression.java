@@ -3,7 +3,6 @@ package com.tw.expression;
 import com.tw.Operand;
 import com.tw.Token;
 import com.tw.exception.InvalidExpressionException;
-import com.tw.parser.ExpressionParser;
 
 import java.util.EmptyStackException;
 import java.util.List;
@@ -15,19 +14,17 @@ import static java.lang.Double.parseDouble;
 
 public class PostfixExpression {
     private final Stack<Token> stack;
-    private final String expression;
-    private final ExpressionParser expressionParser;
+    private final List<Token> tokensInPostfix;
 
-    public PostfixExpression(String expression, ExpressionParser expressionParser) {
-        this.expression = expression;
-        this.expressionParser = expressionParser;
+    public PostfixExpression(List<Token> tokensInPostfix) {
+        this.tokensInPostfix = tokensInPostfix;
         stack = new Stack<>();
     }
 
     public double evaluate() {
-        List<Token> tokens = expressionParser.parse(expression);
+
         try {
-            for (Token token : tokens) {
+            for (Token token : tokensInPostfix) {
                 if (token.isOperand()) {
                     stack.push(token);
                 }
@@ -43,16 +40,23 @@ public class PostfixExpression {
             throw new InvalidExpressionException("Invalid expression");
         }
 
+        return resultUponSuccessfulEvaluationOfExpression();
+    }
+
+    private double resultUponSuccessfulEvaluationOfExpression() {
         if(stack.empty()) throw new InvalidExpressionException("Invalid expression");
         Token result = stack.pop();
         if(!stack.empty()) throw new InvalidExpressionException("Invalid expression");
-        return parseDouble(result.getValue());
+        double resultDecimal;
+        try {
+            resultDecimal = parseDouble(result.getValue());
+        } catch ( NumberFormatException e) { // last remaining result should be parsable as a Number
+            throw new InvalidExpressionException("Invalid expression");
+        }
+        return resultDecimal;
     }
 
     private Token perform(String operator, String operand1, String operand2) {
-        System.out.println("operator = " + operator);
-        System.out.println("operand1 = " + operand1);
-        System.out.println("operand2 = " + operand2);
         double result = get(operator)
                 .perform(parseDouble(operand2), parseDouble(operand1));
         return Operand.of(Double.toString(result));
@@ -63,11 +67,19 @@ public class PostfixExpression {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PostfixExpression that = (PostfixExpression) o;
-        return Objects.equals(stack, that.stack) && Objects.equals(expression, that.expression) && Objects.equals(expressionParser, that.expressionParser);
+        return Objects.equals(stack, that.stack) && Objects.equals(tokensInPostfix, that.tokensInPostfix);
+    }
+
+    @Override
+    public String toString() {
+        return "PostfixExpression{" +
+                "stack=" + stack +
+                ", tokensInPostfix=" + tokensInPostfix +
+                '}';
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(stack, expression, expressionParser);
+        return Objects.hash(stack, tokensInPostfix);
     }
 }
